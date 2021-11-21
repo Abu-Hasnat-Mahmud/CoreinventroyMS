@@ -1,0 +1,39 @@
+﻿@model Core_InventoryMS.Models.Territory
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
+
+<div>
+    <div class="row">
+        <div class="col-md-8">
+            <form id="territoryForm">
+                <input type="hidden" asp-for="TerritoryID" />
+                <div class="form-group">
+                    <label asp-for="TerritoryName" class="control-label"></label>
+                    <input asp-for="TerritoryName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="EnteredBy" class="control-label"></label>
+                    <input asp-for="EnteredBy" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Note" class="control-label"></label>
+                    <input asp-for="Note" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Estatus" class="control-label"></label>
+                    <input asp-for="Estatus" class="form-control" />
+                </div>
+                @*<div class="form-group" id="calender-container">
+                    <label asp-for="ExpenseDate" class="control-label"></label>
+                    <div class="input-group date">
+                        <input asp-for="ExpenseDate" type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    <button type="button" id="btnSubmit" class="btn btn-block btn-info">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

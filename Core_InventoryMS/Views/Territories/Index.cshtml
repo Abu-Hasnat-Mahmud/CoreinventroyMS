@@ -1,0 +1,142 @@
+﻿@model IEnumerable<Core_InventoryMS.Models.Territory>
+@{
+    ViewData["Title"] = "Territory Manager";
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" rel="stylesheet">
+
+
+<h2>Territory</h2>
+<br />
+<div>
+    <div style="float:left">
+        <button class="btn btn-primary" onclick="AddEditTerritory(0)">Add Territory</button>
+        @*<button class="btn btn-success" onclick="ReportExpense()">Expense Report</button>*@
+    </div>
+    <div style="float:right; width:40%;">
+        <form asp-controller="Expense" asp-action="Index" class="form-group">
+            <div class="col-sm-6">
+                <input class="form-control" type="text" name="SearchString" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default btn-info">Filter</button>
+        </form>
+    </div>
+</div>
+<br />
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.TerritoryID)</th>
+            <th>@Html.DisplayNameFor(model => model.TerritoryName)</th>
+            <th>Action Item</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.TerritoryID)</td>
+                <td>@Html.DisplayFor(modelItem => item.TerritoryName)</td>
+                <td>
+                    <button class="btn btn-default" onclick="AddEditTerritory(@item.TerritoryID)">Edit</button>
+                    <button class="btn btn-danger" onclick="DeleteTerritory(@item.TerritoryID)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="modal fade" id="territoryFormModel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 id="title" class="modal-title">Add Territory</h3>
+            </div>
+            <div class="modal-body" id="territoryFormModelDiv">
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="modal fade" id="expenseReportModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Expense Report</h3>
+                </div>
+                <div class="modal-body" id="expenseReportModalDiv">
+                </div>
+            </div>
+        </div>
+    </div>*@
+<script>
+    var AddEditTerritory = function (territoryId) {
+        //debugger;
+        var url = "/Territories/AddEditTerritory?territoryId=" + territoryId;
+        if (territoryId > 0)
+            $('#title').html("Edit Territory");
+
+        $("#territoryFormModelDiv").load(url, function () {
+            $("#territoryFormModel").modal("show");
+
+        });
+
+        //$('#territoryFormModel').on('shown.bs.modal', function () {
+
+        //        $('#calender-container .input-group.date').datepicker({
+        //            todayBtn: true,
+        //            calendarWeeks: true,
+        //            todayHighlight: true,
+        //            autoclose: true,
+        //            container: '#territoryFormModel modal-body'
+        //        });
+
+        //    });
+    }
+
+    //var ReportExpense = function () {
+    //    var url = "/Expense/ExpenseSummary";
+
+    //    $("#expenseReportModalDiv").load(url, function () {
+    //        $("#expenseReportModal").modal("show");
+    //    })
+    //}
+
+    var DeleteTerritory = function (territoryid) {
+
+        var ans = confirm("Do you want to delete territory with Territory Id: " + territoryid);
+
+        if (ans) {
+            $.ajax({
+                type: "POST",
+                url: "/Territories/Delete/" + territoryid,
+                success: function () {
+                    window.location.href = "/Territories/Index";
+                }
+            })
+        }
+    }
+</script>
+<script>
+    $('body').on('click', "#btnSubmit", function () {
+        var myformdata = $("#territoryForm").serialize();
+
+        $.ajax({
+            type: "POST",
+            url: "/Territories/Create",
+            data: myformdata,
+            success: function () {
+                $("#myModal").modal("hide");
+                window.location.href = "/Territories/Index";
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        })
+    })</script>
